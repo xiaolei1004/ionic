@@ -23,7 +23,11 @@ exports.config = {
     { components: ['ion-slides', 'ion-slide'] },
     { components: ['ion-spinner'] },
     { components: ['ion-tabs', 'ion-tab', 'ion-tab-bar', 'ion-tab-button', 'ion-tab-highlight'] },
-    { components: ['ion-toggle'] }
+    { components: ['ion-toggle'] },
+    { components: ['ion-nav'] },
+    { components: ['page-one'] },
+    { components: ['page-two'] },
+    { components: ['page-three'] }
   ],
   preamble: '(C) Ionic http://ionicframework.com - MIT License',
   global: 'src/global/ionic-global.ts'
