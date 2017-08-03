@@ -16,7 +16,8 @@ export class Nav {
 
   @Method()
   push(tagName: string) {
-    (this.element.lastChild as HTMLElement).style.transform = 'translate3d(-1000px,0px,0px)';
+    (this.element.lastChild as any).originalStyle = (this.element.lastChild as HTMLElement).style.display;
+    (this.element.lastChild as HTMLElement).style.display = 'none';
     const newElement = document.createElement(tagName);
     this.element.appendChild(newElement);
     return Promise.resolve();
@@ -25,7 +26,7 @@ export class Nav {
   @Method()
   pop() {
     this.element.removeChild(this.element.lastChild);
-    //(this.element.lastChild as HTMLElement).style.height = '100%';
+    (this.element.lastChild as HTMLElement).style.display = (this.element.lastChild as any).originalStyle;
     return Promise.resolve();
   }
 
