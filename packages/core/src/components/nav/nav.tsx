@@ -1,4 +1,4 @@
-import { Component, Element, Method, Prop } from '@stencil/core';
+import { Component, Element, Method, Prop, State } from '@stencil/core';
 
 
 @Component({
@@ -8,44 +8,28 @@ export class Nav {
 
   @Element() element: HTMLElement;
 
-  @Prop() root: string;
+  @Prop() rootPage: any;
+  @Prop() renderChildren: any;
 
-  ionViewDidLoad() {
-    this.setRoot(this.root);
+  @State() pages: any[][] = [];
+
+  @Method()
+  push(page: any, params: any = {}) {
+    this.pages = this.pages.concat([[page, params]]);
   }
 
   @Method()
-  push(tagName: string) {
-    (this.element.lastChild as any).originalStyle = (this.element.lastChild as HTMLElement).style.display;
-    (this.element.lastChild as HTMLElement).style.display = 'none';
-    const newElement = document.createElement(tagName);
-    this.element.appendChild(newElement);
-    return Promise.resolve();
+  pop(page: any) {
+    this.pages = this.pages.slice(0, -1);
   }
-
-  @Method()
-  pop() {
-    this.element.removeChild(this.element.lastChild);
-    (this.element.lastChild as HTMLElement).style.display = (this.element.lastChild as any).originalStyle;
-    return Promise.resolve();
-  }
-
-  @Method()
-  setRoot(tagName: string) {
-    while (this.element.hasChildNodes()) {
-      this.element.removeChild(this.element.lastChild);
-    }
-
-    const newElement = document.createElement(tagName);
-    this.element.appendChild(newElement);
-
-    return Promise.resolve();
-  }
-
 
   render() {
-    return <div>
-      What up
-    </div>;
+    if (this.pages.length === 0 && this.rootPage !== undefined) {
+      this.push(this.rootPage);
+    }
+    if (this.renderChildren) {
+      this.renderChildren(this.element, this.push.bind(this), this.pop.bind(this), this.pages);
+    }
+    return;
   }
 }
